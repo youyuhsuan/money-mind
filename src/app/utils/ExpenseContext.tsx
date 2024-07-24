@@ -4,15 +4,10 @@ import {
   createContext,
   useContext,
   useReducer,
-  ReactNode,
   useMemo,
   useCallback,
 } from "react";
 import { ExpenseFormState } from "@/app/components/ExpenseForm";
-
-interface Props {
-  children?: ReactNode;
-}
 
 interface ExpensesState {
   expenses: ExpenseFormState[];
@@ -37,9 +32,16 @@ const ExpensesDispatchContext =
   createContext<React.Dispatch<ExpenseAction> | null>(null);
 
 function ExpensesProvider({ children }: { children: React.ReactNode }) {
-  const [expenses, dispatch] = useReducer(expenseReducer, initialState);
+  const [state, dispatch] = useReducer(expenseReducer, initialState);
 
-  const memoizedState = useMemo(() => expenses, [expenses]);
+  const memoizedState = useMemo(
+    () => ({
+      expenses: state.expenses,
+      currentForm: state.currentForm,
+    }),
+    [state.expenses, state.currentForm]
+  );
+
   const memoizedDispatch = useCallback(dispatch, [dispatch]);
 
   return (

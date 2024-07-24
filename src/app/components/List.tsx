@@ -4,13 +4,15 @@ import React from "react";
 import { useExpenses, useExpensesDispatch } from "@/app/utils/ExpenseContext";
 import { ExpenseFormState } from "@/app/components/ExpenseForm";
 
-export function ExpenseList() {
+interface ExpenseItemProps {
+  expense: ExpenseFormState;
+  onDelete: (id: string) => void;
+}
+
+export const ExpenseList = React.memo(function ExpenseList() {
   const { expenses } = useExpenses();
   const dispatch = useExpensesDispatch();
-
-  const handleDelete = (id: string) => {
-    dispatch({ type: "DELETED", id });
-  };
+  console.log("No render!!!");
 
   return (
     <ul>
@@ -18,17 +20,12 @@ export function ExpenseList() {
         <ExpenseItem
           key={expense.id}
           expense={expense}
-          onDelete={handleDelete}
+          onDelete={() => dispatch({ type: "DELETED", id: expense.id })}
         />
       ))}
     </ul>
   );
-}
-
-interface ExpenseItemProps {
-  expense: ExpenseFormState;
-  onDelete: (id: string) => void;
-}
+});
 
 function ExpenseItem({ expense, onDelete }: ExpenseItemProps) {
   const amountColor = expense.type === "income" ? "green" : "red";
