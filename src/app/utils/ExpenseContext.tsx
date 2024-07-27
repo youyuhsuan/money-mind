@@ -27,45 +27,50 @@ export type ExpenseAction =
   | { type: "SET_TYPE"; payload: "income" | "expense" }
   | { type: "RESET_FORM" };
 
-const ExpensesContext = createContext<ExpensesState | null>(null);
+const ExpensesContext = createContext<ExpenseFormState[] | null>(null);
+const CurrentFormContext = createContext<ExpenseFormState | null>(null);
 const ExpensesDispatchContext =
   createContext<React.Dispatch<ExpenseAction> | null>(null);
 
 function ExpensesProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(expenseReducer, initialState);
 
-  const memoizedState = useMemo(
-    () => ({
-      expenses: state.expenses,
-      currentForm: state.currentForm,
-    }),
-    [state.expenses, state.currentForm]
+  const memoizedExpenses = useMemo(() => state.expenses, [state.expenses]);
+  const memoizedCurrentForm = useMemo(
+    () => state.currentForm,
+    [state.currentForm]
   );
-
   const memoizedDispatch = useCallback(dispatch, [dispatch]);
 
   return (
-    <ExpensesContext.Provider value={memoizedState}>
-      <ExpensesDispatchContext.Provider value={memoizedDispatch}>
-        {children}
-      </ExpensesDispatchContext.Provider>
+    <ExpensesContext.Provider value={memoizedExpenses}>
+      <CurrentFormContext.Provider value={memoizedCurrentForm}>
+        <ExpensesDispatchContext.Provider value={memoizedDispatch}>
+          {children}
+        </ExpensesDispatchContext.Provider>
+      </CurrentFormContext.Provider>
     </ExpensesContext.Provider>
   );
 }
 
 function useExpenses() {
   const context = useContext(ExpensesContext);
-  console.log(`useExpenses:${context}`);
-
   if (context === null) {
     throw new Error("useExpenses must be used within an ExpensesProvider");
   }
   return context;
 }
 
+function useCurrentForm() {
+  const context = useContext(CurrentFormContext);
+  if (context === null) {
+    throw new Error("useCurrentForm must be used within an ExpensesProvider");
+  }
+  return context;
+}
+
 function useExpensesDispatch() {
   const context = useContext(ExpensesDispatchContext);
-  console.log(`useExpensesDispatch:${context}`);
   if (context === null) {
     throw new Error(
       "useExpensesDispatch must be used within an ExpensesProvider"
@@ -114,4 +119,4 @@ function expenseReducer(
   }
 }
 
-export { ExpensesProvider, useExpenses, useExpensesDispatch };
+export { ExpensesProvider, useExpenses, useCurrentForm, useExpensesDispatch };

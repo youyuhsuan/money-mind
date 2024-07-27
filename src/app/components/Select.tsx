@@ -18,6 +18,5 @@ export default function Select() {
     <StyledSelect onClick={() => setIsOpen(!isOpen)}>
       {selectedItem}
     </StyledSelect>
-    // {isOpen && ()}
   );
 }

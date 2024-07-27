@@ -10,30 +10,38 @@ interface ExpenseItemProps {
 }
 
 export const ExpenseList = React.memo(function ExpenseList() {
-  const { expenses } = useExpenses();
+  const expenses = useExpenses();
   const dispatch = useExpensesDispatch();
   console.log("No render!!!");
 
+  let subtotal = 0;
+  expenses.forEach((expense) => {
+    const amount = Number(expense.amount);
+    expense.type === "income" ? (subtotal += amount) : (subtotal -= amount);
+  });
+
   return (
-    <ul>
-      {expenses.map((expense) => (
-        <ExpenseItem
-          key={expense.id}
-          expense={expense}
-          onDelete={() => dispatch({ type: "DELETED", id: expense.id })}
-        />
-      ))}
-    </ul>
+    <section>
+      <ul>
+        {expenses.map((expense) => (
+          <ExpenseItem
+            key={expense.id}
+            expense={expense}
+            onDelete={() => dispatch({ type: "DELETED", id: expense.id })}
+          />
+        ))}
+      </ul>
+      <div>小計：{subtotal}</div>
+    </section>
   );
 });
 
 function ExpenseItem({ expense, onDelete }: ExpenseItemProps) {
-  const amountColor = expense.type === "income" ? "green" : "red";
   return (
     <li>
       <span>{expense.description}</span>
-      <span style={{ color: amountColor }}>
-        {expense.type === "income" ? "+" : "-"}${expense.amount}
+      <span style={{ color: expense.type === "income" ? "green" : "red" }}>
+        {expense.type === "income" ? "+ " : "- "}${expense.amount}
       </span>
       <button onClick={() => onDelete(expense.id)}>Delete</button>
     </li>

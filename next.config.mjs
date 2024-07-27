@@ -5,6 +5,9 @@ const nextConfig = {
       ssr: true,
     },
   },
+  env: {
+    EVERVAULT_API_KEY: process.env.EVERVAULT_API_KEY,
+  },
 };
 
 export default nextConfig;

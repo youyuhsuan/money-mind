@@ -1,17 +1,31 @@
 import { Container } from "@/app/components/style/Container.styled";
-import Nav from "@/app/components/Nav";
-import Link from "next/link";
 
-export default function Home() {
+import Nav from "@/app/components/Nav";
+import SignInSection from "@/app/components/SignInSection";
+import SignInForm from "@/app/components/SignInForm";
+import SignUpForm from "@/app/components/SignUpForm";
+
+import { getSessionData } from "@/app/utils/session";
+
+export default async function Home() {
+  const sessionData = await getSessionData();
+
   return (
     <main>
-      <Nav></Nav>
+      <Nav />
       <section>
         <Container>
-          <div>歡迎光臨我的頁面</div>
+          {sessionData ? (
+            <SignInSection userEmail={sessionData.userEmail} />
+          ) : (
+            <>
+              <h1>歡迎光臨</h1>
+              <SignInForm />
+            </>
+          )}
+          <SignUpForm />
         </Container>
       </section>
-      <Link href="/accounting">點擊開始</Link>
     </main>
   );
 }

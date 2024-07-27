@@ -1,7 +1,12 @@
 "use client";
 
 import React, { FormEvent } from "react";
-import { useExpenses, useExpensesDispatch } from "@/app/utils/ExpenseContext";
+
+import {
+  useCurrentForm,
+  useExpensesDispatch,
+} from "@/app/utils/ExpenseContext";
+import generateUniqueId from "@/app/utils/generateUniqueId";
 
 export interface ExpenseFormState {
   id: string;
@@ -10,12 +15,8 @@ export interface ExpenseFormState {
   type: "income" | "expense";
 }
 
-function generateUniqueId(): string {
-  return Date.now().toString(36) + Math.random().toString(36);
-}
-
 export const ExpenseForm: React.FC = function ExpenseForm() {
-  const { currentForm } = useExpenses();
+  const currentForm = useCurrentForm();
   const dispatch = useExpensesDispatch();
 
   const isFormValid =
