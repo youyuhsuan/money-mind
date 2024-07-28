@@ -9,6 +9,7 @@ import {
   Button,
   ErrorMessage,
 } from "@/app/components/style/Form.styled";
+import { FormContainer } from "@/app/components/style/Container.styled";
 
 const initialState: AuthFormState = {
   message: "",
@@ -43,18 +44,27 @@ export default function SignUpForm() {
 
   return (
     <Form ref={formRef} onSubmit={handleSubmit}>
-      <Input type="email" name="email" placeholder="Email" required />
-      {authFormState.errors?.email && (
-        <ErrorMessage className="error">
-          {authFormState.errors.email}
-        </ErrorMessage>
-      )}
-      <Input type="password" name="password" placeholder="Password" required />
-      {authFormState.errors?.password && (
-        <ErrorMessage className="error">
-          {authFormState.errors.password}
-        </ErrorMessage>
-      )}
+      <FormContainer>
+        <Input type="email" name="email" placeholder="Email" required />
+        {authFormState.errors?.email && (
+          <ErrorMessage className="error">
+            {authFormState.errors.email}
+          </ErrorMessage>
+        )}
+      </FormContainer>
+      <FormContainer>
+        <Input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+        {authFormState.errors?.password && (
+          <ErrorMessage className="error">
+            {authFormState.errors.password}
+          </ErrorMessage>
+        )}
+      </FormContainer>
       <SignUpButton />
       {authFormState.message && (
         <p className={authFormState.errors ? "error" : "success"}>

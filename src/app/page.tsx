@@ -1,4 +1,5 @@
 import { Container } from "@/app/components/style/Container.styled";
+import { H1 } from "@/app/components/style/Font.styled";
 
 import Nav from "@/app/components/Nav";
 import SignInSection from "@/app/components/SignInSection";
@@ -19,7 +20,7 @@ export default async function Home() {
             <SignInSection userEmail={sessionData.userEmail} />
           ) : (
             <>
-              <h1>歡迎光臨</h1>
+              <H1>Welcome</H1>
               <SignInForm />
             </>
           )}

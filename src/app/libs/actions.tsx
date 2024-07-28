@@ -164,5 +164,17 @@ function handleAuthenticationError(
   };
 }
 
+type FormState = {
+  error: string | null;
+  success: boolean;
+  data: any | null;
+};
+
+const initialState: FormState = {
+  error: null,
+  success: false,
+  data: null,
+};
+
 export { authenticate, handleLogin };
-export type { Fields, AuthFormState };
+export type { Fields, AuthFormState, FormState };

@@ -1,16 +1,17 @@
 import Link from "next/link";
-import { ExpensesProvider } from "@/app/utils/ExpenseContext";
-import { ExpenseForm } from "@/app/components/ExpenseForm";
-import { ExpenseList } from "@/app/components/List";
+import AccountSecion from "@/app/components/AccountSecion";
+import { Container } from "@/app/components/style/Container.styled";
+import { H1 } from "@/app/components/style/Font.styled";
 
-export default async function Page() {
+export default function Page() {
   return (
     <main>
-      <ExpensesProvider>
-        <ExpenseForm />
-        <ExpenseList />
-      </ExpensesProvider>
-      <Link href="/">返回首頁</Link>
+      <Container>
+        <Link href="/">
+          <H1>Transactions</H1>
+        </Link>
+        <AccountSecion />
+      </Container>
     </main>
   );
 }

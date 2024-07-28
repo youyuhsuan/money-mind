@@ -1,9 +1,12 @@
-// LoggedInSection.tsx
 "use client";
 
+import { H1, Slogen } from "./style/Font.styled";
+import { Container, LoggedInContainer } from "./style/Container.styled";
 import { Button } from "@/app/components/style/Form.styled";
+
 import Link from "next/link";
 import axios from "axios";
+
 import { useRouter } from "next/navigation";
 
 interface LoggedInSectionProps {
@@ -15,18 +18,24 @@ export default function LoggedInSection({ userEmail }: LoggedInSectionProps) {
 
   const logoutUser = async () => {
     try {
+      // TODO:axios與fetch詳細分析, axios物件 , fetch
       await axios.get("/api/users/logout");
       router.refresh();
     } catch (error: any) {
-      console.log("Oops! We could not logout the user: " + error.message);
+      console.log("We could not logout the user: " + error.message);
     }
   };
 
   return (
-    <div>
-      <h1>歡迎回來，{userEmail}！</h1>
-      <Link href="/accounting">點擊開始</Link>
-      <Button onClick={logoutUser}>登出</Button>
-    </div>
+    <Container>
+      <LoggedInContainer>
+        <H1>Welcome back, {userEmail}!</H1>
+        <Button onClick={logoutUser}>Log out</Button>
+      </LoggedInContainer>
+
+      <Link href="/accounting">
+        <Slogen>Click to start</Slogen>
+      </Link>
+    </Container>
   );
 }

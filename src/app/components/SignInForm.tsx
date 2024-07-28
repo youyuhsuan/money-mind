@@ -9,6 +9,7 @@ import {
   Button,
   ErrorMessage,
 } from "@/app/components/style/Form.styled";
+import { FormContainer } from "@/app/components/style/Container.styled";
 
 const initialState: AuthFormState = {
   message: "",
@@ -29,9 +30,9 @@ export default function SignInForm() {
   }, [authFormState]);
 
   const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
-      const formData = new FormData(e.currentTarget);
+    (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      const formData = new FormData(event.currentTarget);
       formData.set("action", "signin");
       formAction(formData);
     },
@@ -40,22 +41,28 @@ export default function SignInForm() {
 
   return (
     <Form ref={formRef} onSubmit={handleSubmit}>
-      <Input type="email" name="email" placeholder="Email" required />
-      {authFormState.errors?.email && (
-        <ErrorMessage className="error">
-          {authFormState.errors.email}
-        </ErrorMessage>
-      )}
-
-      <Input type="password" name="password" placeholder="Password" required />
-      {authFormState.errors?.password && (
-        <ErrorMessage className="error">
-          {authFormState.errors.password}
-        </ErrorMessage>
-      )}
-
+      <FormContainer>
+        <Input type="email" name="email" placeholder="Email" required />
+        {authFormState.errors?.email && (
+          <ErrorMessage className="error">
+            {authFormState.errors.email}
+          </ErrorMessage>
+        )}
+      </FormContainer>
+      <FormContainer>
+        <Input
+          type="password"
+          name="password"
+          placeholder="Password"
+          required
+        />
+        {authFormState.errors?.password && (
+          <ErrorMessage className="error">
+            {authFormState.errors.password}
+          </ErrorMessage>
+        )}
+      </FormContainer>
       <LoginButton />
-
       {authFormState.message && (
         <p className={authFormState.errors ? "error" : "success"}>
           {authFormState.message}

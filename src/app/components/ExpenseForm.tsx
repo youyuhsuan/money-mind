@@ -7,6 +7,7 @@ import {
   useExpensesDispatch,
 } from "@/app/utils/ExpenseContext";
 import generateUniqueId from "@/app/utils/generateUniqueId";
+import { Form, Input, Button } from "@/app/components/style/Form.styled";
 
 export interface ExpenseFormState {
   id: string;
@@ -53,12 +54,12 @@ export const ExpenseForm: React.FC = function ExpenseForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit}>
       <select name="type" value={currentForm.type} onChange={handleInputChange}>
         <option value="income">收入</option>
         <option value="expense">支出</option>
       </select>
-      <input
+      <Input
         type="number"
         name="amount"
         placeholder="請輸入金額"
@@ -66,7 +67,7 @@ export const ExpenseForm: React.FC = function ExpenseForm() {
         onChange={handleInputChange}
         required
       />
-      <input
+      <Input
         type="text"
         name="description"
         placeholder="請輸入描述"
@@ -74,9 +75,9 @@ export const ExpenseForm: React.FC = function ExpenseForm() {
         onChange={handleInputChange}
         required
       />
-      <button type="submit" disabled={!isFormValid}>
+      <Button type="submit" disabled={!isFormValid}>
         新增紀錄
-      </button>
-    </form>
+      </Button>
+    </Form>
   );
 };
