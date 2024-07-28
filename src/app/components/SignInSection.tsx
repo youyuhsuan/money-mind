@@ -1,7 +1,10 @@
 "use client";
 
-import { H1, Slogen } from "./style/Font.styled";
-import { Container, LoggedInContainer } from "./style/Container.styled";
+import { H1, Slogen } from "@/app/components/style/Font.styled";
+import {
+  Container,
+  LoggedInContainer,
+} from "@/app/components/style/Container.styled";
 import { Button } from "@/app/components/style/Form.styled";
 
 import Link from "next/link";
