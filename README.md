@@ -1,92 +1,70 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# MoneyMind
 
-## Getting Started
+MoneyMind is a modern financial management application built with Next.js and Firebase. It helps users track, visualize, and better understand their financial data through intuitive interfaces and powerful visualization tools.
 
-First, run the development server:
+## Quick Links
+
+- [Live Demo](https://youyuhsuan.com/)
+- [API Documentation](https://youyuhsuan.com/docs)
+- [Architecture Diagram](https://www.figma.com/board/nAlgjGkHrUsvJVlxZ6LFbi/AccountForm-Information-Visualization-Web?t=x3vnJlQ4KttXn6Al-1)
+
+## Core Features
+
+MoneyMind provides a comprehensive suite of features for personal finance management:
+
+- **Intelligent Financial Tracking**: Automatically categorize and monitor your income and expenses
+- **Interactive Data Visualization**: View your financial data through dynamic charts and graphs
+- **Real-time Updates**: See your financial changes instantly reflected in the dashboard
+- **Secure Authentication**: Keep your financial data protected with Firebase authentication
+- **Responsive Design**: Access your finances on any device with a fully responsive interface
+- **Smart Insights**: Get personalized financial recommendations based on your spending patterns
+
+## Tech Stack
+
+### Frontend Development
+
+<div align="left">
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React"/>
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript"/>
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white" alt="Next.js"/>
+  <img src="https://img.shields.io/badge/Chakra_UI-319795?style=for-the-badge&logo=chakra-ui&logoColor=white" alt="Chakra UI"/>
+  <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chart.js&logoColor=white" alt="Chart.js"/>
+  <img src="https://img.shields.io/badge/Rive-FF4154?style=for-the-badge&logo=r&logoColor=white" alt="Rive"/>
+  <img src="https://img.shields.io/badge/Zod-3068B7?style=for-the-badge&logo=zod&logoColor=white" alt="Zod"/>
+  <img src="https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white" alt="Framer Motion"/>
+</div>
+
+### Backend Services
+
+<div align="left">
+  <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase"/>
+    <img src="https://img.shields.io/badge/Firebase_Authentication-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase Authentication"/>
+</div>
+
+## Installation
+
+1. Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/yourusername/moneymind.git
+cd moneymind
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install the required dependencies and start the development server:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+3. Configure environment variables
 
-## Learn More
+Create a .env file in the project root directory
+See .env.example for required variables
 
-To learn more about Next.js, take a look at the following resources:
+## Test Credentials
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-
-## Deployment
-
-To deploy your application to Firebase, follow these steps:
-
-1. **Login to Firebase**
-
-   If you haven't already, log in to your Firebase account:
-
-   ```
-   firebase login
-   ```
-
-   This command will open a browser window for you to authenticate with your Google account associated with Firebase.
-
-2. **Initialize Firebase in your project**
-
-   If you haven't initialized Firebase in your project yet, run:
-
-   ```
-   firebase init
-   ```
-
-   This command will guide you through the setup process:
-
-   - Select the Firebase features you want to use (Hosting, Firestore, etc.)
-   - Choose an existing Firebase project or create a new one
-   - Set up your public directory (usually "build" for React apps or "out" for Next.js)
-   - Configure as a single-page app if applicable
-   - Set up automatic builds and deploys with GitHub (optional)
-
-3. **Build your application**
-
-   Before deploying, make sure to build your application:
-
-   ```
-   npm run build
-   ```
-
-   This command will create a production-ready build of your application.
-
-4. **Deploy to Firebase**
-
-   Once your app is built, deploy it to Firebase:
-
-   ```
-   firebase deploy
-   ```
-
-   This command will upload your application files and deploy your Firebase configuration (Firestore rules, Firebase Functions, etc.) to your Firebase project.
-
-After successful deployment, Firebase will provide you with a hosted URL where your application is live.
-
-Note: Make sure your `.firebaserc` file is correctly configured with your Firebase project ID. If you're using multiple environments (development, staging, production), you can use Firebase targets to manage different deployments.
-
-For more detailed information about deploying to Firebase, refer to the [Firebase Hosting documentation](https://firebase.google.com/docs/hosting).
+| Item     | Content        |
+| :------- | :------------- |
+| Email    | test@gmail.com |
+| Password | Test01         |
