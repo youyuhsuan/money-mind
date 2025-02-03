@@ -30,7 +30,7 @@ export interface TimeSeriesData {
 }
 
 export interface ExpenseContextType {
-  expenses: TransactionFields[];
+  expenses: any[];
   initialState: TransactionFields;
   totals: ExpenseTotals;
   growth: ExpenseGrowth;

@@ -172,7 +172,7 @@ export function useChart() {
         ticks: {
           font: {
             size: 12,
-            family: "'Inter', sans-serif",
+            family: "'quicksand', sans-serif",
           },
         },
       },
@@ -190,7 +190,7 @@ export function useChart() {
           },
           font: {
             size: 12,
-            family: "'Inter', sans-serif",
+            family: "'quicksand', sans-serif",
           },
         },
       },

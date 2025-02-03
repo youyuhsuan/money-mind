@@ -32,10 +32,8 @@ import { useChart } from "@/hook/useChart";
 import TransactionsList from "../TransactionsList";
 import ChartCard from "./ChartCard";
 import TodaySummary from "./TodaySummary";
-import type { TimeSeriesData } from "@/types/ExpenseType";
-import { Bar } from "react-chartjs-2";
-import SimpleBarChart from "./BarChart";
 import BarChart from "./BarChart";
+import type { TimeSeriesData } from "@/types/ExpenseType";
 
 ChartJS.register(
   CategoryScale,
@@ -61,8 +59,8 @@ const VisualizationSection: React.FC = () => {
     lineOptions,
   } = useChart();
   const { totals, timeSeriesData, categoryData } = state;
-
   const [timeframe, setTimeframe] = useState<keyof TimeSeriesData>("weekly");
+  const isCategoryEmpty = !categoryData;
 
   return (
     <Box w="full">
@@ -78,14 +76,16 @@ const VisualizationSection: React.FC = () => {
         </GridItem>
         <GridItem colSpan={{ base: 1, lg: 8 }}>
           <TodaySummary
-            timeSeriesData={timeSeriesData}
+            timeSeriesData={timeSeriesData.daily}
             dailyDoughnut={dailyDoughnutData}
             dailyDoughnuOptions={dailyDoughnutOptions}
           />
         </GridItem>
         <GridItem colSpan={{ base: 1, lg: 6 }}>
           <ChartCard
-            title="Income Distribution"
+            title="Category Distribution"
+            isEmpty={isCategoryEmpty}
+            emptyStateMessage="Start adding transactions to see your category distribution"
             chart={
               <Doughnut
                 data={categoryDoughnutData}

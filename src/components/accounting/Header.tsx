@@ -18,9 +18,8 @@ const Header: React.FC = () => {
     md: "xs",
     lg: "s",
   });
-  const regularFontSize = useBreakpointValue({ base: "xs", md: "s", lg: "xl" });
-
-  const headingSize = useBreakpointValue({ base: "s", md: "md", lg: "xl" });
+  const regularFontSize = useBreakpointValue({ base: "xs", md: "s", lg: "md" });
+  const headingSize = useBreakpointValue({ base: "s", md: "md", lg: "lg" });
 
   if (isLoading) {
     return (
@@ -30,7 +29,7 @@ const Header: React.FC = () => {
             <Text fontSize={smallestFontSize}>Welcome back!</Text>
           </Skeleton>
           <Skeleton>
-            <Heading as="h4" size={headingSize} mb={4}>
+            <Heading as="h5" size={headingSize} mb={4}>
               loading@email.com
             </Heading>
           </Skeleton>
@@ -49,7 +48,7 @@ const Header: React.FC = () => {
       {sessionData && (
         <VStack w="full" align="start">
           <Text fontSize={smallestFontSize}>Welcome back!</Text>
-          <Heading as="h4" size={headingSize} mb={4}>
+          <Heading as="h5" size={headingSize} mb={4}>
             {sessionData.userEmail}
           </Heading>
           <Text fontWeight="bold" fontSize={regularFontSize}>

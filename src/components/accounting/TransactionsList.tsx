@@ -54,9 +54,12 @@ const TransactionsList: React.FC = () => {
     }
   };
 
-  console.log(expenses);
   const allTransactions = useMemo(() => {
-    return expenses.map(() => expense.transactions || []);
+    return Array.isArray(expenses) &&
+      expenses.length > 0 &&
+      expenses[0]?.transactions?.length > 0
+      ? expenses[0].transactions.map((transaction: any) => transaction || [])
+      : [];
   }, [expenses]);
 
   return (
