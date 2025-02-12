@@ -226,38 +226,42 @@ const VisualizationSection = ({ timeframe }: VisualizationSectionProps) => {
                 {calculateCategorys(timeframe)
                   .categories.filter((cat) => cat[type] > 0)
                   .map(
-                    (categoryData: {
-                      [x: string]:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | React.ReactPortal
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      category:
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | React.ReactElement<
-                            any,
-                            string | React.JSXElementConstructor<any>
-                          >
-                        | Iterable<React.ReactNode>
-                        | Promise<React.AwaitedReactNode>
-                        | null
-                        | undefined;
-                      incomePercentage: any;
-                      expensePercentage: any;
-                    }) => (
+                    (
+                      categoryData: {
+                        [x: string]:
+                          | string
+                          | number
+                          | bigint
+                          | boolean
+                          | React.ReactElement<
+                              any,
+                              string | React.JSXElementConstructor<any>
+                            >
+                          | Iterable<React.ReactNode>
+                          | React.ReactPortal
+                          | Promise<React.AwaitedReactNode>
+                          | null
+                          | undefined;
+                        category:
+                          | string
+                          | number
+                          | bigint
+                          | boolean
+                          | React.ReactElement<
+                              any,
+                              string | React.JSXElementConstructor<any>
+                            >
+                          | Iterable<React.ReactNode>
+                          | Promise<React.AwaitedReactNode>
+                          | null
+                          | undefined;
+                        incomePercentage: any;
+                        expensePercentage: any;
+                      },
+                      index
+                    ) => (
                       <Flex
+                        key={index}
                         direction="row"
                         justify="space-between"
                         align="center"
