@@ -10,18 +10,19 @@ import {
   ModalCloseButton,
   Button,
   useDisclosure,
+  useColorMode,
 } from "@chakra-ui/react";
-import AccountForm from "./AccountForm";
 import { Plus } from "lucide-react";
+import AccountForm from "./AccountForm";
 
 const TransactionsButton = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { colorMode } = useColorMode();
 
   return (
     <>
-      <Button onClick={onOpen} gap={1}>
+      <Button variant="ghost" onClick={onOpen} gap={1}>
         <Plus />
-        New
       </Button>
       <Modal
         isOpen={isOpen}
@@ -30,7 +31,7 @@ const TransactionsButton = () => {
         motionPreset="slideInBottom"
       >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent bg={colorMode === "light" ? "#faf9f0" : "#171407"}>
           <ModalHeader>Add Transaction</ModalHeader>
           <ModalCloseButton />
           <ModalBody>

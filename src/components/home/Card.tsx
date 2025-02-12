@@ -11,6 +11,7 @@ import {
   CardBody,
   Flex,
   useBreakpointValue,
+  useColorMode,
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { useCard } from "@/hook/useCard";
@@ -68,6 +69,7 @@ const CardItem = ({
 }: CardItemProps) => {
   const itemRef = useRef(null);
   const isInView = useInView(itemRef, { once: true, margin: "-20% 0px" });
+  const { colorMode } = useColorMode();
 
   return (
     <motion.div
@@ -76,8 +78,17 @@ const CardItem = ({
       animate={isInView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5 }}
     >
-      <Card mb={margin} boxShadow="lg" bg="#f9faf9">
-        <Flex p={padding} gap={gap} flexDirection={flexDirection}>
+      <Card
+        mb={margin}
+        boxShadow="lg"
+        bg={colorMode === "light" ? "#1a1912" : "#eeede5"}
+      >
+        <Flex
+          p={padding}
+          gap={gap}
+          flexDirection={flexDirection}
+          alignItems="center"
+        >
           <Box w={textWidth}>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -85,7 +96,12 @@ const CardItem = ({
               transition={{ duration: 0.5, delay: 0.2 }}
             >
               <CardHeader p={0}>
-                <Heading as="h3" size={{ base: "xl", md: "2xl" }} mb={4}>
+                <Heading
+                  as="h3"
+                  size={{ base: "xl", md: "2xl" }}
+                  color={colorMode === "light" ? "#faf9f0" : "#171407"}
+                  mb={4}
+                >
                   {card.title}
                 </Heading>
               </CardHeader>
@@ -96,20 +112,27 @@ const CardItem = ({
               transition={{ duration: 0.5, delay: 0.4 }}
             >
               <CardBody>
-                <Text fontSize={{ base: "lg", md: "xl" }}>
+                <Text
+                  fontSize={{ base: "lg", md: "xl" }}
+                  color={colorMode === "light" ? "#faf9f0" : "#171407"}
+                >
                   {card.description}
                 </Text>
               </CardBody>
             </motion.div>
           </Box>
 
-          <Box w={imageWidth}>
+          <Box w={imageWidth} h="100%">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: 0.6 }}
+              style={{
+                width: "100%",
+                height: "400px",
+              }}
             >
-              <RiveWrapper />
+              <RiveWrapper src={card.src} />
             </motion.div>
           </Box>
         </Flex>

@@ -1,25 +1,31 @@
 "use client";
 
-import { TimeSeriesData } from "@/types/ExpenseType";
+import { TransactionType } from "@/types/ExpenseType";
 import { Select } from "@chakra-ui/react";
 
 interface ChartControlsProps {
-  timeframe: keyof TimeSeriesData;
-  setTimeframe: (timeframe: keyof TimeSeriesData) => void;
+  type?: TransactionType;
+  setType?: (type: TransactionType) => void;
 }
 
-const ChartControls = ({ timeframe, setTimeframe }: ChartControlsProps) => (
-  <Select
-    value={timeframe}
-    onChange={(e) => setTimeframe(e.target.value as keyof TimeSeriesData)}
-    size="sm"
-    borderRadius="xl"
-    width="120px"
-  >
-    <option value="weekly">Weekly</option>
-    <option value="monthly">Monthly</option>
-    <option value="yearly">Yearly</option>
-  </Select>
-);
+const ChartControls = ({ type, setType }: ChartControlsProps) => {
+  return (
+    <>
+      {type && setType && (
+        <Select
+          value={type}
+          onChange={(e) => setType(e.target.value as TransactionType)}
+          size="sm"
+          borderRadius="xl"
+          width="100px"
+          border="none"
+        >
+          <option value="expense">Expense</option>
+          <option value="income">Income</option>
+        </Select>
+      )}
+    </>
+  );
+};
 
 export default ChartControls;

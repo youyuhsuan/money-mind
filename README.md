@@ -12,12 +12,10 @@ MoneyMind is a modern financial management application built with Next.js and Fi
 
 MoneyMind provides a comprehensive suite of features for personal finance management:
 
-- **Intelligent Financial Tracking**: Automatically categorize and monitor your income and expenses
 - **Interactive Data Visualization**: View your financial data through dynamic charts and graphs
 - **Real-time Updates**: See your financial changes instantly reflected in the dashboard
 - **Secure Authentication**: Keep your financial data protected with Firebase authentication
 - **Responsive Design**: Access your finances on any device with a fully responsive interface
-- **Smart Insights**: Get personalized financial recommendations based on your spending patterns
 
 ## Tech Stack
 
@@ -39,6 +37,12 @@ MoneyMind provides a comprehensive suite of features for personal finance manage
 <div align="left">
   <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase"/>
     <img src="https://img.shields.io/badge/Firebase_Authentication-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" alt="Firebase Authentication"/>
+</div>
+
+### Testing Tools
+
+<div align="left">
+  <img src="https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white" alt="Jest"/>
 </div>
 
 ## Installation

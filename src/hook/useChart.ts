@@ -1,82 +1,40 @@
-import { useExpense } from "@/store/provider/ExpenseProvider";
-import { TimeSeriesData } from "@/types/ExpenseType";
+import { getCategoryColor } from "@/utility/getCategoryColor";
 import { ChartOptions } from "chart.js";
+import { useExpense } from "@/store/provider/ExpenseProvider";
+import { TimeSeriesData, TimeSeriesValues } from "@/types/ExpenseType";
 
 export function useChart() {
   const { state } = useExpense();
-  const { totals, timeSeriesData, categoryData } = state;
+  const { calculateCategorys, transactions } = state;
 
-  // Doughnut Daily Data
-  const dailyDoughnutData = {
-    labels: ["Income", "Expense"],
-    datasets: [
-      {
-        data: Object.values(timeSeriesData.daily).reduce(
-          (acc, curr) => {
-            return [acc[0] + curr.income, acc[1] + curr.expense];
-          },
-          [0, 0]
-        ),
-        backgroundColor: [
-          "rgba(99, 179, 237, 0.8)",
-          "rgba(247, 103, 103, 0.8)",
-        ],
-        borderColor: ["rgb(99, 179, 237)", "rgb(247, 103, 103)"],
-        borderWidth: 2,
-        hoverOffset: 4,
-      },
-    ],
-  };
+  // Doughnut category Data
+  const categoryDistributionConfig = (
+    timeframe: keyof TimeSeriesData,
+    type: keyof TimeSeriesValues
+  ) => {
+    const categoryData = calculateCategorys(timeframe).categories;
+    const filteredData = categoryData.filter(
+      (item: { [key: string]: any }) => item[type] > 0
+    );
+    const labels = filteredData.map((item: { category: any }) => item.category);
+    const values = filteredData.map((item: { [x: string]: any }) => item[type]);
+    const colors = labels.map((category: string) => getCategoryColor(category));
 
-  const dailyDoughnutOptions: ChartOptions<"doughnut"> = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      tooltip: {
-        backgroundColor: "rgba(255, 255, 255, 0.95)",
-        titleColor: "#1a202c",
-        bodyColor: "#4a5568",
-        borderColor: "#e2e8f0",
-        borderWidth: 1,
-        padding: 12,
-        cornerRadius: 8,
-        callbacks: {
-          label: function (context) {
-            const value = context.raw as number;
-            return `${context.label}: $${value.toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })}`;
-          },
+    return {
+      labels: labels,
+      datasets: [
+        {
+          label: "Category Distribution",
+          data: values,
+          borderColor: colors,
+          backgroundColor: colors,
+          hoverOffset: 4,
         },
-      },
-    },
+      ],
+    };
   };
 
-  // Category
-  // Doughnut category data
-  const categoryDoughnutData = {
-    labels: Object.keys(categoryData),
-    datasets: [
-      {
-        label: "Category Expenses",
-        data: Object.values(categoryData).map(Math.abs),
-        backgroundColor: [
-          "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-          "rgb(255, 205, 86)",
-          "rgb(75, 192, 192)",
-          "rgb(153, 102, 255)",
-        ],
-        hoverOffset: 4,
-      },
-    ],
-  };
-
-  const categoryDoughnutOptions: ChartOptions<"doughnut"> = {
+  const categoryDistributionOptions: ChartOptions<"doughnut"> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -88,11 +46,8 @@ export function useChart() {
         },
       },
       tooltip: {
-        backgroundColor: "rgba(255, 255, 255, 0.95)",
-        titleColor: "#1a202c",
-        bodyColor: "#4a5568",
-        borderColor: "#e2e8f0",
-        borderWidth: 1,
+        // titleColor: "#1a202c",
+        // bodyColor: "#4a5568",
         padding: 12,
         cornerRadius: 8,
         callbacks: {
@@ -106,16 +61,18 @@ export function useChart() {
   };
 
   // Line Chart Data
-  const lineData = (timeframe: keyof TimeSeriesData) => {
-    const data = timeSeriesData[timeframe];
+  const trendChartConfig = (timeframe: keyof TimeSeriesData) => {
+    console.log("transactions", transactions);
     return {
-      labels: Object.keys(data),
+      labels: Object.keys(transactions[timeframe]),
       datasets: [
         {
           label: "Income",
-          data: Object.values(data).map((d) => d.income),
-          borderColor: "rgb(99, 179, 237)",
-          backgroundColor: "rgba(99, 179, 237, 0.1)",
+          data: Object.values(transactions[timeframe])
+            .map((periodData: any) => periodData.total.income)
+            .filter((income) => income > 0),
+          borderColor: "#9ee0e1",
+          backgroundColor: "#9ee0e1",
           tension: 0.3,
           fill: true,
           pointRadius: 4,
@@ -123,9 +80,11 @@ export function useChart() {
         },
         {
           label: "Expense",
-          data: Object.values(data).map((d) => d.expense),
-          borderColor: "rgb(247, 103, 103)",
-          backgroundColor: "rgba(247, 103, 103, 0.1)",
+          data: Object.values(transactions[timeframe])
+            .map((periodData: any) => periodData.total.expense)
+            .filter((expense) => expense > 0),
+          borderColor: "#748bd4",
+          backgroundColor: "#748bd4",
           tension: 0.3,
           fill: true,
           pointRadius: 4,
@@ -135,19 +94,27 @@ export function useChart() {
     };
   };
 
-  const lineOptions: ChartOptions<"line"> = {
+  const trendChartOptions: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        display: false,
+        display: true,
+        position: "top",
+        labels: {
+          usePointStyle: true,
+          pointStyle: "circle",
+          padding: 20,
+          boxWidth: 8,
+          boxHeight: 8,
+          font: {
+            size: 12,
+            family: "'quicksand', sans-serif",
+          },
+        },
       },
       tooltip: {
-        backgroundColor: "rgba(255, 255, 255, 0.95)",
-        titleColor: "#1a202c",
-        bodyColor: "#4a5568",
-        borderColor: "#e2e8f0",
-        borderWidth: 1,
+        titleColor: "#171407",
         padding: 12,
         cornerRadius: 8,
         callbacks: {
@@ -179,7 +146,7 @@ export function useChart() {
       y: {
         beginAtZero: true,
         grid: {
-          color: "rgba(226, 232, 240, 0.6)",
+          color: "#e5e5e5",
         },
         ticks: {
           callback: function (value) {
@@ -198,11 +165,9 @@ export function useChart() {
   };
 
   return {
-    dailyDoughnutData,
-    dailyDoughnutOptions,
-    categoryDoughnutData,
-    categoryDoughnutOptions,
-    lineData,
-    lineOptions,
+    categoryDistributionConfig,
+    categoryDistributionOptions,
+    trendChartConfig,
+    trendChartOptions,
   };
 }

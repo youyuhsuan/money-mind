@@ -1,11 +1,15 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
+
 import { useExpense } from "@/store/provider/ExpenseProvider";
 
 export function useTransactionManager() {
   const { dispatch } = useExpense();
+
+  // Loading and error states
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errors, setErrors] = useState<string | null>(null);
 
+  // Function to fetch transactions from API
   const getTransactions = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -20,20 +24,24 @@ export function useTransactionManager() {
         throw new Error("Failed to fetch transactions");
       }
       const data = await response.json();
-      await dispatch({ type: "ADD_EXPENSE", expense: data });
+      await dispatch({
+        type: "SET_EXPENSE",
+        expense: data.transactions,
+      });
     } catch (error) {
       setIsLoading(false);
       setErrors(error as string);
-      error instanceof Error ? error.message : "An unknown error occurred";
     } finally {
       setIsLoading(false);
     }
   }, [dispatch]);
 
+  // Function to refresh transactions
   const refreshTransactions = useCallback(() => {
     getTransactions();
   }, [getTransactions]);
 
+  // Function to delete a transaction
   const deleteTransaction = useCallback(
     async (transactionId: string) => {
       try {
@@ -59,14 +67,17 @@ export function useTransactionManager() {
     [refreshTransactions]
   );
 
+  // Effect to fetch transactions on component mount
   useEffect(() => {
     getTransactions();
   }, [getTransactions]);
 
+  // Return an object with all necessary data and functions
   return {
     isLoading,
     errors,
     refreshTransactions,
     deleteTransaction,
+    dispatch,
   };
 }

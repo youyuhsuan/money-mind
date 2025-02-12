@@ -3,6 +3,7 @@ import { useFormState } from "react-dom";
 import { useToast } from "@chakra-ui/react";
 import { transactionDispatch } from "@/libs/transactionDispatch";
 import type { TransactionState } from "@/types/FormType";
+import { TransactionType } from "@/types/ExpenseType";
 
 const initialState: TransactionState = {
   success: "",
@@ -27,8 +28,8 @@ interface UseTransactionFormReturn {
   resetForm: () => void;
   category: string[];
   setCategory: (category: string[]) => void;
-  type: string;
-  setType: (type: string) => void;
+  type: TransactionType;
+  setType: (type: TransactionType) => void;
 }
 
 export function useTransactionForm({
@@ -36,7 +37,7 @@ export function useTransactionForm({
 }: UseTransactionFormProps = {}): UseTransactionFormReturn {
   const toast = useToast();
   const [category, setCategory] = useState<string[]>([]);
-  const [type, setType] = useState<string>("income");
+  const [type, setType] = useState<TransactionType>("income");
   const formRef = useRef<HTMLFormElement>(null);
 
   const resetForm = useCallback(() => {

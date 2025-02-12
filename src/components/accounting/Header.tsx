@@ -2,6 +2,7 @@
 
 import React from "react";
 import {
+  Box,
   Container,
   Heading,
   Skeleton,
@@ -9,10 +10,22 @@ import {
   useBreakpointValue,
   VStack,
 } from "@chakra-ui/react";
+
+// hook
 import { useSession } from "@/hook/useSession";
 
-const Header: React.FC = () => {
+import type { TimeSeriesData } from "@/types/ExpenseType";
+import { useExpense } from "@/store/provider/ExpenseProvider";
+
+interface HeaderProps {
+  timeframe: keyof TimeSeriesData;
+}
+
+const Header = ({ timeframe }: HeaderProps) => {
   const { isLoading, sessionData } = useSession();
+  const { state } = useExpense();
+  const { calculateTotals } = state;
+  const totalValue = calculateTotals(timeframe);
   const smallestFontSize = useBreakpointValue({
     base: "xxs",
     md: "xs",
@@ -33,27 +46,36 @@ const Header: React.FC = () => {
               loading@email.com
             </Heading>
           </Skeleton>
-          <Skeleton>
-            <Text fontWeight="bold" fontSize={regularFontSize}>
-              Your Account Dashboard.
-            </Text>
-          </Skeleton>
         </VStack>
       </Container>
     );
   }
 
   return (
-    <Container maxW="container.xl" px={0}>
+    <Container maxW="container.xl" px={{ base: 4, md: 6 }}>
       {sessionData && (
-        <VStack w="full" align="start">
-          <Text fontSize={smallestFontSize}>Welcome back!</Text>
-          <Heading as="h5" size={headingSize} mb={4}>
-            {sessionData.userEmail}
-          </Heading>
-          <Text fontWeight="bold" fontSize={regularFontSize}>
-            Your Account Dashboard.{" "}
-          </Text>
+        <VStack align="start" spacing={{ base: 4, md: 3 }} my={14}>
+          {/* Welcome Section */}
+
+          <Box>
+            <Text fontSize="sm" color="gray.600" fontWeight="medium" mb={1}>
+              Welcome back!
+            </Text>
+            <Heading fontSize={headingSize} fontWeight="bold">
+              {sessionData.userEmail}
+            </Heading>
+          </Box>
+
+          {/* Balance Display */}
+          <Box>
+            <Text
+              fontSize={{ base: "3xl", md: "7xl" }}
+              fontWeight="bold"
+              letterSpacing="1px"
+            >
+              $ {totalValue.totals.toLocaleString()}
+            </Text>
+          </Box>
         </VStack>
       )}
     </Container>

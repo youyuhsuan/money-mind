@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useEffect, useRef, useState } from "react";
+import { useFormStatus } from "react-dom";
 import {
   Box,
   Button,
@@ -19,7 +19,11 @@ import RiveWrapper from "./RiveWrapper";
 import { useRouter } from "next/navigation";
 import { useAuthForm } from "@/hook/useAuthForm";
 
-export default function AuthForm() {
+interface AuthFormProps {
+  value: string;
+}
+
+export default function AuthForm({ value }: AuthFormProps) {
   const {
     isLogin,
     setIsLogin,
@@ -51,7 +55,7 @@ export default function AuthForm() {
       {/* Left animation area */}
       {!isMobile && (
         <Box flex={1}>
-          <RiveWrapper />
+          <RiveWrapper src={"/animations/isocube.riv"} />
         </Box>
       )}
 
@@ -64,7 +68,7 @@ export default function AuthForm() {
             textAlign="center"
             mt={6}
           >
-            {isLogin ? "Welcome Back" : "Create Account"}
+            {value === "login" && isLogin ? "Welcome Back" : "Create Account"}
           </Heading>
 
           <form ref={formRef} action={dispatch}>
@@ -135,13 +139,15 @@ export default function AuthForm() {
               borderRadius="md"
               w="full"
             >
-              {isLogin ? "Login" : "Register"}
+              {value === "login" && isLogin ? "Login" : "Register"}
             </Button>
           </form>
 
           <Flex justify="center" align="center" gap={1}>
             <Text color="gray.600">
-              {isLogin ? "Don't have an account?" : "Already have an account?"}
+              {value === "login" && isLogin
+                ? "Don't have an account?"
+                : "Already have an account?"}
             </Text>
             <Button
               type="submit"
@@ -150,9 +156,15 @@ export default function AuthForm() {
               variant="link"
               color="blue.500"
               fontWeight="medium"
-              onClick={() => setIsLogin(!isLogin)}
+              onClick={() => {
+                if (value === "login" && isLogin) {
+                  router.push("/auth/register");
+                } else {
+                  router.push("/auth/login");
+                }
+              }}
             >
-              {isLogin ? "Register" : "Login"}
+              {value === "login" && isLogin ? "Register" : "Login"}
             </Button>
           </Flex>
         </VStack>

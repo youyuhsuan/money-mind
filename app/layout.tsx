@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
 import { Provider } from "@/store/provider/ChakraProvider";
+import { ColorModeInit } from "@/store/provider/colorModeScript";
 
-export const metadata: Metadata = {
-  title: "Personal Finance Tracker",
+export const viewport = {
+  title: "MoneyMind",
   description:
     "A comprehensive web application for tracking your personal finances, expenses, and budgeting needs",
   keywords: [
@@ -24,6 +24,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        <ColorModeInit />
         <Provider>{children}</Provider>
       </body>
     </html>

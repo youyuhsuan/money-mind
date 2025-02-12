@@ -6,10 +6,15 @@ export function expenseReducer(
   action: ExpenseAction
 ) {
   switch (action.type) {
+    case "SET_EXPENSE":
+      return {
+        ...state,
+        expenses: action.expense,
+      };
     case "ADD_EXPENSE":
       return {
         ...state,
-        expenses: [action.expense],
+        expenses: [...state.expenses, action.expense],
       };
     case "DELETE_EXPENSE":
       return {

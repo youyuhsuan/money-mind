@@ -1,7 +1,8 @@
 import Nav from "@/components/Nav";
-import AuthForm from "@/components/home/AuthForm";
 import Card from "@/components/home/Card";
 import Hero from "@/components/home/Hero";
+import Footer from "@/components/home/Foorter";
+import CoinField from "@/components/home/CoinField";
 
 export default function Home() {
   return (
@@ -9,7 +10,8 @@ export default function Home() {
       <Nav />
       <Hero />
       <Card />
-      <AuthForm />
+      <CoinField />
+      <Footer />
     </>
   );
 }

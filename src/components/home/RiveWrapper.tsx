@@ -1,9 +1,13 @@
 import React from "react";
 import { useRive, Layout, Fit } from "@rive-app/react-canvas";
 
-const RiveWrapper = () => {
+interface RiveWrapperProps {
+  src: string;
+}
+
+const RiveWrapper = ({ src }: RiveWrapperProps) => {
   const { RiveComponent } = useRive({
-    src: "/animations/isocube.riv",
+    src: src,
     stateMachines: "State Machine 1",
     autoplay: true,
     layout: new Layout({

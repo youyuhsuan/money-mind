@@ -16,6 +16,7 @@ import {
   HStack,
   Radio,
   Textarea,
+  useColorMode,
 } from "@chakra-ui/react";
 import { useTransactionManager } from "@/hook/useTransactionManager";
 import { useTransactionForm } from "@/hook/useTransactionForm";
@@ -23,6 +24,7 @@ import TypeSegmentedControl from "./TypeSegmentedControl";
 import { ChipInput } from "./ChipInput";
 
 const AccountForm: React.FC = () => {
+  const { colorMode } = useColorMode();
   const { refreshTransactions } = useTransactionManager();
   const { state, dispatch, formRef, category, setCategory, type, setType } =
     useTransactionForm({
@@ -136,7 +138,7 @@ const AccountForm: React.FC = () => {
               maxH="200px"
               rows={4}
               spellCheck="true"
-              bg="white"
+              bg={colorMode === "light" ? "#faf9f0" : "#171407"}
               _hover={{ borderColor: "gray.300" }}
               _focus={{ borderColor: "blue.500", boxShadow: "outline" }}
             />
@@ -156,13 +158,19 @@ const AccountForm: React.FC = () => {
 
 function AccountButton() {
   const { pending } = useFormStatus();
+  const { colorMode } = useColorMode();
 
   return (
     <Button
       type="submit"
       isLoading={pending}
       loadingText="Submitting..."
-      colorScheme="blue"
+      color="white"
+      bg={colorMode === "light" ? "brand.accent.light" : "brand.accent.dark"}
+      _hover={{
+        opacity: 0.9,
+        boxShadow: "md",
+      }}
       width="100%"
       size="lg"
       mt={2}

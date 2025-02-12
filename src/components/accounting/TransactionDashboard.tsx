@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo, useState } from "react";
 import { Inbox } from "lucide-react";
 import {
   Box,
@@ -10,31 +11,24 @@ import {
   VStack,
   Flex,
   Container,
-  useBreakpointValue,
 } from "@chakra-ui/react";
 
 // components
 import Header from "@/components/accounting/Header";
 import TransactionsButton from "@/components/accounting/form/TransactionsButton";
-import TransactionsSummary from "@/components/accounting/TransactionsSummary";
-import FilterInput from "@/components/accounting/FilterInput";
+import VisualizationSection from "@/components/accounting/chartjs/VisualizationSection";
+import TimeframeButtons from "@/components/accounting/ButtonGroup";
 
 // hook
 import { useTransactionManager } from "@/hook/useTransactionManager";
+import { TimeSeriesData } from "@/types/ExpenseType";
 import { useExpense } from "@/store/provider/ExpenseProvider";
-import VisualizationSection from "@/components/accounting/chartjs/VisualizationSection";
 
 const TransactionDashboard = () => {
+  const [timeframe, setTimeframe] = useState<keyof TimeSeriesData>("weekly");
   const { isLoading } = useTransactionManager();
   const { state } = useExpense();
-
-  if (isLoading) {
-    return (
-      <Center h="200px">
-        <Spinner size="lg" />
-      </Center>
-    );
-  }
+  const { transactions } = state;
 
   if (isLoading)
     return (
@@ -44,29 +38,20 @@ const TransactionDashboard = () => {
     );
 
   return (
-    <Container maxW="8xl" mt={30} centerContent>
-      <Flex
-        minWidth="max-content"
-        alignItems="center"
-        w="full"
-        px={{ base: 4, md: 6, lg: 8 }}
-        py={{ base: 4, md: 8 }}
-      >
-        <Header />
-        <Flex ml="auto" gap={2}>
-          <FilterInput />
-          <TransactionsButton />
-        </Flex>
+    <Container maxW="6xl" mt={30} centerContent>
+      <Header timeframe={timeframe} />
+      <Flex ml="auto" gap={2}>
+        <TimeframeButtons timeframe={timeframe} setTimeframe={setTimeframe} />
+        <TransactionsButton />
       </Flex>
       <Container
-        maxW="container.lg"
+        maxW="container.xl"
         px={{ base: 4, md: 6, lg: 8 }}
         py={{ base: 4, md: 8 }}
       >
-        <TransactionsSummary />
         <VStack w="full">
-          {state.expenses ? (
-            <VisualizationSection />
+          {transactions ? (
+            <VisualizationSection timeframe={timeframe} />
           ) : (
             <Flex minWidth="max-content" alignItems="center" gap="2">
               <VStack spacing={3}>
