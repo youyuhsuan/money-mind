@@ -13,9 +13,20 @@ import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
+import { useSession } from "@/hook/useSession";
 
 const Hero = () => {
   const { colorMode } = useColorMode();
+  const { sessionData } = useSession();
+
+  const handleClick = () => {
+    if (sessionData) {
+      router.push("/accounting");
+    } else {
+      router.push("/auth/login");
+    }
+  };
+
   const router = useRouter();
   const heroRef = useRef(null);
   const isInView = useInView(heroRef, { once: true });
@@ -210,7 +221,7 @@ const Hero = () => {
           }}
         >
           <Button
-            onClick={() => router.push("/auth/login")}
+            onClick={handleClick}
             style={{
               pointerEvents: "auto",
             }}

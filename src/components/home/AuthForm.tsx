@@ -14,6 +14,7 @@ import {
   Flex,
   useBreakpointValue,
   FormErrorMessage,
+  useColorMode,
 } from "@chakra-ui/react";
 import RiveWrapper from "./RiveWrapper";
 import { useRouter } from "next/navigation";
@@ -37,6 +38,7 @@ export default function AuthForm({ value }: AuthFormProps) {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const formRef = useRef<HTMLFormElement>(null);
   const { pending } = useFormStatus();
+  const { colorMode } = useColorMode();
 
   useEffect(() => {
     if (state.success === "signup successful") {
@@ -129,11 +131,18 @@ export default function AuthForm({ value }: AuthFormProps) {
             <Button
               type="submit"
               size="lg"
-              bg="blue.500"
-              color="white"
+              bg={
+                colorMode === "light"
+                  ? "brand.secondary.light"
+                  : "brand.secondary.dark"
+              }
               _hover={{
-                bg: "blue.600",
+                bg:
+                  colorMode === "light"
+                    ? "brand.secondary.lightHover"
+                    : "brand.secondary.darkHover",
               }}
+              color="white"
               fontSize="md"
               h="50px"
               borderRadius="md"
@@ -154,7 +163,11 @@ export default function AuthForm({ value }: AuthFormProps) {
               isLoading={pending}
               loadingText="Submitting..."
               variant="link"
-              color="blue.500"
+              color={
+                colorMode === "light"
+                  ? "brand.accent.light"
+                  : "brand.accent.dark"
+              }
               fontWeight="medium"
               onClick={() => {
                 if (value === "login" && isLogin) {

@@ -1,5 +1,11 @@
 import AuthForm from "@/components/home/AuthForm";
+import Nav from "@/components/Nav";
 
 export default function Page() {
-  return <AuthForm value={"register"} />;
+  return (
+    <>
+      <Nav />
+      <AuthForm value={"register"} />
+    </>
+  );
 }

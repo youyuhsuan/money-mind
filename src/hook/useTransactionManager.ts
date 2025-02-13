@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useReducer, useState } from "react";
-
 import { useExpense } from "@/store/provider/ExpenseProvider";
+import { useSession } from "./useSession";
 
 export function useTransactionManager() {
   const { dispatch } = useExpense();
@@ -8,12 +8,12 @@ export function useTransactionManager() {
   // Loading and error states
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [errors, setErrors] = useState<string | null>(null);
+  const { sessionData } = useSession();
 
-  // Function to fetch transactions from API
   const getTransactions = useCallback(async () => {
     try {
       setIsLoading(true);
-      const response = await fetch("/api/account/get", {
+      const response = await fetch(`/api/account/${sessionData?.userId}/get`, {
         credentials: "include",
         headers: {
           "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export function useTransactionManager() {
     } finally {
       setIsLoading(false);
     }
-  }, [dispatch]);
+  }, [dispatch, sessionData?.userId]);
 
   // Function to refresh transactions
   const refreshTransactions = useCallback(() => {
@@ -46,7 +46,7 @@ export function useTransactionManager() {
     async (transactionId: string) => {
       try {
         const response = await fetch(
-          `/api/account/delete?transactionId=${transactionId}`,
+          `/api/account/${sessionData?.userId}/delete?transactionId=${transactionId}`,
           {
             method: "DELETE",
             headers: {
@@ -64,7 +64,7 @@ export function useTransactionManager() {
         setErrors("Failed to delete transaction. Please try again.");
       }
     },
-    [refreshTransactions]
+    [refreshTransactions, sessionData?.userId]
   );
 
   // Effect to fetch transactions on component mount

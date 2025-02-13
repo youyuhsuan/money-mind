@@ -3,6 +3,8 @@ import { cookies } from "next/headers";
 import { sessionDB } from "@/libs/database";
 
 export async function GET(request: NextRequest) {
+  const userId = request.nextUrl.pathname.split("/").pop();
+
   try {
     const sessionCookie = request.cookies.get("session");
     if (!sessionCookie?.value) {

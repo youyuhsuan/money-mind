@@ -3,14 +3,7 @@
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Box,
-  Container,
-  Heading,
-  Flex,
-  Button,
-  useColorMode,
-} from "@chakra-ui/react";
+import { Box, Container, Flex, Button, useColorMode } from "@chakra-ui/react";
 
 import { useSession } from "@/hook/useSession";
 import PillButton from "./PillButton";

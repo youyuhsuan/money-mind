@@ -19,7 +19,12 @@ export const theme = extendTheme({
   colors: {
     brand: {
       primary: { light: "#faf2cf", dark: "#ffd500" },
-      secondary: { light: "#9ee0e1", dark: "#1e6062" },
+      secondary: {
+        light: "#9ee0e1",
+        lightHover: "#8ccbcc",
+        dark: "#1e6062",
+        darkHover: "#276d6f",
+      },
       text: {
         light: "#171407",
         dark: "#faf9f0",

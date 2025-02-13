@@ -29,7 +29,8 @@ import {
   useBoolean,
   VStack,
 } from "@chakra-ui/react";
-import { useTagSuggestions } from "@/hook/useTagSuggestions";
+import { useTagInput } from "@/hook/useTagInput";
+import { Span } from "next/dist/trace";
 
 interface ChipInputProps {
   value: string[];
@@ -41,48 +42,34 @@ interface ChipInputProps {
 }
 
 interface SuggestionsListProps {
-  showSuggestions: boolean;
   filteredSuggestions: string[];
   addTag: (tag: string) => void;
 }
 
 export const SuggestionsList: React.FC<SuggestionsListProps> = ({
-  showSuggestions,
   filteredSuggestions,
   addTag,
 }) => {
   return (
-    <VStack
-      position="absolute"
-      top="100%"
-      left={0}
-      right={0}
-      bg="white"
-      borderWidth="1px"
-      borderRadius="md"
-      boxShadow="sm"
-      zIndex={1}
-      maxH="200px"
-      overflowY="auto"
-      display={
-        showSuggestions && filteredSuggestions.length > 0 ? "block" : "none"
-      }
-      spacing={0}
-      transition="all 0.2s"
+    <HStack
+      width="100%"
+      display={filteredSuggestions.length > 0 ? "flex" : "none"}
+      spacing={1}
+      flexWrap="wrap"
       role="listbox"
       aria-label="Tag suggestions"
+      color={"brand.mono.gray.400"}
+      py={1}
+      fontSize="xs"
     >
+      <Box>Tag suggestions:</Box>
       {filteredSuggestions.map((suggestion: string) => (
         <Box
           key={suggestion}
-          p={2}
           cursor="pointer"
-          _hover={{ bg: "gray.100" }}
           onClick={() => addTag(suggestion)}
           role="option"
           tabIndex={0}
-          width="100%"
-          textAlign="left"
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
@@ -93,7 +80,7 @@ export const SuggestionsList: React.FC<SuggestionsListProps> = ({
           {suggestion}
         </Box>
       ))}
-    </VStack>
+    </HStack>
   );
 };
 
@@ -103,47 +90,27 @@ export const ChipInput = ({
   errors,
   maxTags = 5,
   placeholder = "Type and press enter...",
-  storageKey = "tagSuggestions",
 }: ChipInputProps) => {
   const [inputValue, setInputValue] = useState("");
-  const [isInvalid, setIsInvalid] = useBoolean();
-  const [showSuggestions, setShowSuggestions] = useState(false);
 
-  const { suggestions, addToSuggestions } = useTagSuggestions({
-    storageKey,
+  const {
+    isInvalid,
+    filteredSuggestions,
+    addTag,
+    handleKeyDown,
+    removeTag,
+    handleInputChange,
+  } = useTagInput({
+    value,
+    onChange,
+    errors,
+    maxTags,
+    inputValue,
+    setInputValue,
   });
 
-  const filteredSuggestions = useMemo(() => {
-    return suggestions.filter(
-      (tag: string) =>
-        !value.includes(tag) &&
-        tag.toLowerCase().includes(inputValue.toLowerCase())
-    );
-  }, [suggestions, value, inputValue]);
+  console.log("filteredSuggestions", filteredSuggestions);
 
-  const addTag = useCallback(
-    (newTag: string) => {
-      if (value.length < maxTags && !value.includes(newTag)) {
-        onChange([...value, newTag]);
-        addToSuggestions(newTag);
-        setInputValue("");
-        setShowSuggestions(false);
-      }
-    },
-    [value, maxTags, onChange, addToSuggestions]
-  );
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-    setShowSuggestions(true);
-  };
-
-  useEffect(() => {
-    // Update invalid state based on both value length and errors
-    setIsInvalid[value.length === 0 || !!errors ? "on" : "off"]();
-  }, [value, errors, setIsInvalid]);
-
-  // Hidden input for form submission
   const hiddenInputProps = {
     type: "hidden",
     name: "category",
@@ -151,43 +118,26 @@ export const ChipInput = ({
     required: true,
   };
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === "Enter" && inputValue.trim()) {
-        e.preventDefault();
-        const newTag = inputValue.trim();
-
-        if (value.length < maxTags && !value.includes(newTag)) {
-          onChange([...value, newTag]);
-          setInputValue("");
-        }
-      }
-    },
-    [inputValue, value, maxTags, onChange]
-  );
-
-  const removeTag = useCallback(
-    (tag: string) => {
-      onChange(value.filter((t) => t !== tag));
-    },
-    [value, onChange]
-  );
-
   return (
     <FormControl isInvalid={isInvalid}>
-      <FormLabel>Tags</FormLabel>
+      <FormLabel>
+        <Text display="inline">Tags</Text>{" "}
+        <Text display="inline" color="red">
+          *
+        </Text>
+      </FormLabel>
       <input {...hiddenInputProps} />
-      <Box
-        position="relative"
-        borderWidth="1px"
-        borderRadius="lg"
-        px={[2, 4]}
-        py={[1, 2]}
-        borderColor={errors ? "red.300" : "inherit"}
-      >
-        <HStack spacing={2} wrap="wrap">
+      <Box position="relative" borderColor={errors ? "red.300" : "inherit"}>
+        <HStack
+          spacing={2}
+          wrap="wrap"
+          borderWidth="1px"
+          borderRadius="lg"
+          px={[2, 4]}
+          py={[1, 2]}
+        >
           {value.map((tag) => (
-            <Tag key={tag} size="md" variant="subtle" colorScheme="blue">
+            <Tag key={tag} size="md" variant="subtle">
               <TagLabel>{tag}</TagLabel>
               <TagCloseButton onClick={() => removeTag(tag)} />
             </Tag>
@@ -197,8 +147,6 @@ export const ChipInput = ({
               value={inputValue}
               onChange={handleInputChange}
               onKeyDown={handleKeyDown}
-              onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-              onFocus={() => setShowSuggestions(true)}
               placeholder={placeholder}
               size="sm"
               variant="unstyled"
@@ -208,7 +156,6 @@ export const ChipInput = ({
           )}
         </HStack>
         <SuggestionsList
-          showSuggestions={showSuggestions}
           filteredSuggestions={filteredSuggestions}
           addTag={addTag}
         />
