@@ -1,7 +1,7 @@
 import { Provider } from "@/store/provider/ChakraProvider";
 import { ColorModeInit } from "@/store/provider/colorModeScript";
 
-export const viewport = {
+export const metadata = {
   title: "MoneyMind",
   description:
     "A comprehensive web application for tracking your personal finances, expenses, and budgeting needs",
@@ -12,6 +12,11 @@ export const viewport = {
     "financial planning",
     "money management",
   ],
+  icons: {
+    icon: "/SVG/logo.svg",
+    apple: "/SVG/logo.svg",
+    shortcut: "/SVG/logo.svg",
+  },
   authors: [{ name: "you yu hsuan" }],
   viewport: "width=device-width, initial-scale=1",
 };
